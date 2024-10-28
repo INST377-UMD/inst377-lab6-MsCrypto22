@@ -37,33 +37,27 @@
     </div>
 
     <script>
-        // Initialize the map and set view to US coordinates
         var map = L.map('map').setView([37.8, -96.9], 4); // US centered
         
-        // Add a tile layer (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
 
-        // Function to generate random coordinates
         function getRandomInRange(from, to, fixed) {
             return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
         }
 
-        // Generate random coordinates for 3 markers
         const coords = [
             { lat: getRandomInRange(30, 35, 3), lng: getRandomInRange(-100, -90, 3) },
             { lat: getRandomInRange(30, 35, 3), lng: getRandomInRange(-100, -90, 3) },
             { lat: getRandomInRange(30, 35, 3), lng: getRandomInRange(-100, -90, 3) }
         ];
 
-        // Add markers to the map and display the coordinates
         coords.forEach((coord, index) => {
             var marker = L.marker([coord.lat, coord.lng]).addTo(map);
             document.getElementById(`lat${index + 1}`).innerText = coord.lat;
             document.getElementById(`lng${index + 1}`).innerText = coord.lng;
 
-            // Fetch locality data from the API for each marker
             fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coord.lat}&longitude=${coord.lng}&localityLanguage=en`)
                 .then(response => response.json())
                 .then(data => {
